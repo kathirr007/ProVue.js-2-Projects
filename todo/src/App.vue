@@ -15,6 +15,16 @@
           {{task.done}}
         </div>
       </div>
+      <form v-on:submit.prevent class="form">
+        <div class="row py-2">
+          <div class="col">
+            <input reqiured v-model="newItemText" class="form-control" />
+          </div>
+          <div class="col-2">
+            <button class="btn btn-primary" type="submit" v-on:click="addNewTodo">Add</button>
+          </div>
+        </div>
+      </form>
       <div class="row bg-secondary py-2 mt-2 text-white">
         <div class="col text-center">
           <input id="hideCompleted" type="checkbox" v-model="hideCompleted" class="form-check-input" />
@@ -42,12 +52,24 @@ export default {
         {action: "Cook Non-veg", done: false}
       ],
       hideCompleted: true,
+      newItemText: '',
     }
   },
   computed: {
     filteredTasks() {
       return this.hideCompleted ?
         this.tasks.filter(task => !task.done) : this.tasks;
+    }
+  },
+  methods: {
+    addNewTodo() {
+      if(this.newItemText) {
+        this.tasks.push({
+          action: this.newItemText,
+          done: false
+        });
+      }
+      this.newItemText = '';
     }
   }
 }
