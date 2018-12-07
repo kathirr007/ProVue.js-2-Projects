@@ -4,24 +4,31 @@
       {{name}}'s' To do list
     </h4>
     <div class="container-fluid p-4">
-      <div class="row">
-        <div class="col font-weight-bold">Task</div>
-        <div class="col-2 font-weight-bold">Done</div>
-      </div>
-      <div class="row" v-for="task in filteredTasks" v-bind:key="task.action">
-        <div class="col">{{task.action}}</div>
-        <div class="col-2">
-          <input type="checkbox" class="form-check-input" v-model="task.done" />
-          {{task.done}}
+      <div class="row" v-if="filteredTasks.length == 0">
+        <div class="col text-center">
+          <b>Yeah! All tasks are completed and i've no task to do.</b>
         </div>
       </div>
-      <form v-on:submit.prevent class="form">
+      <template v-else>
+        <div class="row">
+          <div class="col font-weight-bold">Task</div>
+          <div class="col-2 font-weight-bold">Done</div>
+        </div>
+        <div class="row" v-for="task in filteredTasks" :key="task.action">
+          <div class="col">{{task.action}}</div>
+          <div class="col-2">
+            <input type="checkbox" class="form-check-input" v-model="task.done" />
+            {{task.done}}
+          </div>
+        </div>
+      </template>
+      <form @submit.prevent class="form">
         <div class="row py-2">
           <div class="col">
             <input reqiured v-model="newItemText" class="form-control" />
           </div>
           <div class="col-2">
-            <button class="btn btn-primary" type="submit" v-on:click="addNewTodo">Add</button>
+            <button class="btn btn-primary" type="submit" @click="addNewTodo">Add</button>
           </div>
         </div>
       </form>
@@ -31,6 +38,11 @@
           <label for="hideCompleted" class="form-check-label font-weight-bold">
             Hide completed tasks
           </label>
+        </div>
+        <div class="col text-center">
+          <button class="btn btn-sm btn-warning" @click="deleteCompleted">
+            Delete Completed
+          </button>
         </div>
       </div>
     </div>
@@ -63,8 +75,15 @@ export default {
           done: false
         });
       }
-      localStorage.setItem('todos', JSON.stringify(this.tasks));
+      this.storeData();
       this.newItemText = '';
+    },
+    storeData() {
+      localStorage.setItem('todos', JSON.stringify(this.tasks));
+    },
+    deleteCompleted() {
+      this.tasks = this.tasks.filter(task => !task.done);
+      this.storeData();
     }
   },
   created() {
