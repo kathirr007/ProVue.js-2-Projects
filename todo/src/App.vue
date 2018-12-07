@@ -44,13 +44,7 @@ export default {
   data() {
     return {
       name: "Kathirr007",
-      tasks: [
-        {action: "Buy Vegetables", done: true},
-        {action: "Buy Medicines", done: false},
-        {action: "Buy Books", done: true},
-        {action: "Driving class training", done: false},
-        {action: "Cook Non-veg", done: false}
-      ],
+      tasks: [],
       hideCompleted: true,
       newItemText: '',
     }
@@ -69,9 +63,16 @@ export default {
           done: false
         });
       }
+      localStorage.setItem('todos', JSON.stringify(this.tasks));
       this.newItemText = '';
     }
-  }
+  },
+  created() {
+    let todos = localStorage.getItem('todos');
+    if (todos != null) {
+      this.tasks = JSON.parse(todos);
+    }
+  },
 }
 </script>
 
@@ -81,6 +82,5 @@ export default {
     + label {
       cursor: pointer;
     }
-  } 
-
+  }
 </style>
