@@ -53,6 +53,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  input[type="checkbox"]{
+    cursor: pointer;
+    + label {
+      cursor: pointer;
+    }
+  } 
 
 </style>
