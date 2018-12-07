@@ -10,7 +10,10 @@
       </div>
       <div class="row" v-for="task in tasks" v-bind:key="task.action">
         <div class="col">{{task.action}}</div>
-        <div class="col-2">{{task.done}}</div>
+        <div class="col-2">
+          <input type="checkbox" class="form-check-input" v-model="task.done" />
+          {{task.done}}
+        </div>
       </div>
     </div>
   </div>
